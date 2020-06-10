@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>editor online</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #container {
+      width: 100%;
+      height: 600px;
+    }
+
+    .html {
+      /* border: px solid gray; */
+      padding: 10px;
+    }
+
+    .html>a {
+      text-decoration: none;
+    }
+  </style>
+  <script src="./monaco-editor/min/vs/loader.js"></script>
+  <script src="./emmet-monaco-es/dist/emmet-monaco.min.js"></script>
+</head>
+
+<body>
+  <div class="html">
+    <button id="btn"> html display </button>
+  </div>
+  <div id="container"></div>
+  <script>
+    var editor
+    require.config({
+      paths: {
+        'vs': './monaco-editor/min/vs'
+      }
+    });
+    require(['vs/editor/editor.main'], function () {
+      editor = monaco.editor.create(document.getElementById('container'), {
+        value: null,
+        language: 'html',
+        theme: 'vs-dark',
+      })
+      emmetMonaco.emmetHTML()
+    })
+  </script>
+
+  <script>
+    var btn=document.getElementById('btn')
+    btn.onclick=()=>{
+      window.open(`${location.host}/html?stamp=${stamp}`,'_blank')
+    }
+    // var protocol = location.protocol === 'http:' ? 'ws://' : 'wss://'
+    var url = 'ws://'+location.hostname+(location.port+1)
+    var ws = new WebSocket(url)
+    ws.addEventListener('error', (err) => {
+      console.log('ws error', err);
+    })
+    ws.onerror = () => {
+      console.log('ws close');
+      setInterval(() => {
+        console.log('try to connect ws...');
+        ws = new WebSocket(protocol + 'localhost:8081')
+      }, 1000);
+    }
+    ws.onopen = () => {
+      ws.send('you can write code now!')
+    }
+    window.addEventListener('blur', () => {
+      editor && ws.send(editor.getValue())
+    })
+    
+  </script>
+</body>
+
+</html>
