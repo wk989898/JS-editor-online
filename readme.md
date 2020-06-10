@@ -1,6 +1,6 @@
 # online editor
 when you try to code some simple examples 
-you need
+you need  
 ~~make new file `*.html`~~  
 ~~code~~  
 ~~open browser~~  
@@ -8,7 +8,7 @@ you need
 open browser [editor](http://editor.souptop.com/)
 ## Usage
 ```cmd
-git clone
+git clone https://github.com/wk989898/JS-editor-online.git
 npm install
 npm start [port] //default 8080 8081
 ```
