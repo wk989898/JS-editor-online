@@ -52,12 +52,13 @@
   </script>
 
   <script>
-    // var btn = document.getElementById('btn')
-    // btn.onclick = () => {
-    //   window.open(`${location.host}/html?stamp=${stamp}`, '_blank')
-    // }
     var stamp = `${Date.now()}${Math.floor(Math.random() * 10000)}`
-    document.getElementById('a').href = `${location.host}/html?stamp=${stamp}`
+    var {
+      hostname,
+      port,
+      host
+    } = location
+    document.getElementById('a').href = `http://${host}/html?stamp=${stamp}`
 
     function format(data) {
       return JSON.stringify({
@@ -65,11 +66,11 @@
         stamp
       })
     }
-    // var protocol = location.protocol === 'http:' ? 'ws://' : 'wss://'
-    var url = `ws://${location.hostname}:${+location.port+1}`
+    var protocol = location.protocol === 'http:' ? 'ws' : 'wss'
+    var url = `${protocol}://${hostname}:8081`
     var ws = new WebSocket(url)
     ws.onerror = (err) => {
-      console.log('ws error', err)
+      console.log(err)
     }
     ws.onmessage = (msg) => {
       console.log(msg)
@@ -81,7 +82,7 @@
       ws.send(format('you can write code now!'))
     }
     window.addEventListener('blur', () => {
-      editor && ws.send(format(editor.getValue()))
+      editor  && ws.send(format(editor.getValue()))
     })
     window.addEventListener('beforeunload', (e) => {
       ws.send(format('ws close'))

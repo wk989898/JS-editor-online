@@ -19,7 +19,7 @@ app.use('/monaco-editor', express.static(path.resolve('node_modules/monaco-edito
       return res.end()
     }
     res.setHeader('Content-Type', 'text/html')
-    res.end(content[stamp]||'not found')
+    res.end(content[stamp]||`not found stamp ${stamp}`)
   })
   .listen(port, () => {
     console.log(`editor runing at http://localhost:${port}`)
@@ -27,7 +27,7 @@ app.use('/monaco-editor', express.static(path.resolve('node_modules/monaco-edito
   })
 
 const wss = new WebSocket.Server({
-  port: port + 1
+  port: 8081
 })
 wss.on('connection', (ws) => {
   ws.on('message', (res) => {

@@ -3,9 +3,9 @@ when you try to code some simple examples
 you need  
 ~~make new file `*.html`~~  
 ~~code~~  
-~~open browser~~  
+~~open browser to check~~  
 ~~delete file `*.html`~~  
-open browser [editor](http://editor.souptop.com/)
+open browser [editor](http://editor.souptop.com:8080/)
 ## Usage
 ```cmd
 git clone https://github.com/wk989898/JS-editor-online.git
