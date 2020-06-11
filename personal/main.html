@@ -25,20 +25,13 @@
       text-decoration: none;
     }
   </style>
-  <script src="./monaco-editor/min/vs/loader.js"></script>
-  <script src="./emmet-monaco-es/dist/emmet-monaco.min.js"></script>
-</head>
-
-<body>
-  <div class="html">
-    <button id="btn"> html display </button>
-  </div>
-  <div id="container"></div>
+  <script src="./vs/loader.js"></script>
+  <script src="./emmet-monaco.min.js"></script>
   <script>
     var editor
     require.config({
       paths: {
-        'vs': './monaco-editor/min/vs'
+        'vs': './vs',
       }
     });
     require(['vs/editor/editor.main'], function () {
@@ -50,24 +43,35 @@
       emmetMonaco.emmetHTML()
     })
   </script>
+</head>
+
+<body>
+  <div class="html">
+    <a id="a" target="_blank"> html display </a>
+  </div>
+  <div id="container"></div>
 
   <script>
-    var btn=document.getElementById('btn')
-    btn.onclick=()=>{
-      window.open(`${location.host}/html?stamp=${stamp}`,'_blank')
-    }
-    // var protocol = location.protocol === 'http:' ? 'ws://' : 'wss://'
-    var url = 'ws://'+location.hostname+(location.port+1)
+    var {
+      host,
+      hostname,
+      port,
+      protocol
+    } = location
+
+    document.getElementById('a').href = `http://${host}/html`
+    protocol = protocol === 'http:' ? 'ws' : 'wss'
+    port = port ? port : 8080
+    var url = `${protocol}://${hostname}:${port}/ws`
     var ws = new WebSocket(url)
-    ws.addEventListener('error', (err) => {
-      console.log('ws error', err);
-    })
     ws.onerror = () => {
       console.log('ws close');
-      setInterval(() => {
-        console.log('try to connect ws...');
-        ws = new WebSocket(protocol + 'localhost:8081')
-      }, 1000);
+    }
+    ws.onmessage = (msg) => {
+      console.log(msg)
+      setTimeout(() => {
+        location.reload()
+      }, 2000)
     }
     ws.onopen = () => {
       ws.send('you can write code now!')
@@ -75,7 +79,6 @@
     window.addEventListener('blur', () => {
       editor && ws.send(editor.getValue())
     })
-    
   </script>
 </body>
 

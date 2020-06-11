@@ -12,9 +12,14 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "personal":"node ./personal/server.js"
   },
-  "keywords": ["monaco-editor","html","online"],
+  "keywords": [
+    "monaco-editor",
+    "html",
+    "online"
+  ],
   "author": "wk989898",
   "license": "ISC"
 }

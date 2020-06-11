@@ -25,20 +25,13 @@
       text-decoration: none;
     }
   </style>
-  <script src="./monaco-editor/min/vs/loader.js"></script>
-  <script src="./emmet-monaco-es/dist/emmet-monaco.min.js"></script>
-</head>
-
-<body>
-  <div class="html">
-    <a id="a" target="_blank"> html display </a>
-  </div>
-  <div id="container"></div>
-  <script>
+  <script src="./vs/loader.js"></script>
+  <script src="./emmet-monaco.min.js"></script>
+  <script async>
     var editor
     require.config({
       paths: {
-        'vs': './monaco-editor/min/vs'
+        'vs': './vs',
       }
     });
     require(['vs/editor/editor.main'], function () {
@@ -50,13 +43,21 @@
       emmetMonaco.emmetHTML()
     })
   </script>
+</head>
 
+<body>
+  <div class="html">
+    <a id="a" target="_blank"> html display </a>
+  </div>
+  <div id="container"></div>
+  
   <script>
     var stamp = `${Date.now()}${Math.floor(Math.random() * 10000)}`
     var {
+      host,
       hostname,
       port,
-      host
+      protocol
     } = location
     document.getElementById('a').href = `http://${host}/html?stamp=${stamp}`
 
@@ -66,8 +67,9 @@
         stamp
       })
     }
-    var protocol = location.protocol === 'http:' ? 'ws' : 'wss'
-    var url = `${protocol}://${hostname}:8081`
+    protocol = protocol === 'http:' ? 'ws' : 'wss'
+    port = port ? port : 8080
+    var url = `${protocol}://${hostname}:${port}/ws`
     var ws = new WebSocket(url)
     ws.onerror = (err) => {
       console.log(err)
@@ -82,7 +84,7 @@
       ws.send(format('you can write code now!'))
     }
     window.addEventListener('blur', () => {
-      editor  && ws.send(format(editor.getValue()))
+      editor && ws.send(format(editor.getValue()))
     })
     window.addEventListener('beforeunload', (e) => {
       ws.send(format('ws close'))
