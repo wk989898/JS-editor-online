@@ -7,7 +7,7 @@ you need
 ~~delete file `*.html`~~  
 open browser [editor](http://editor.souptop.com/)
 ## Todo
-[ ] ServiceWorker
+ - [ ] ServiceWorker
 ## Usage
 ```cmd
 git clone https://github.com/wk989898/JS-editor-online.git
