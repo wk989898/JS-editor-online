@@ -1,4 +1,4 @@
-# online editor
+# online editor[deprecated]
 when you try to code some simple examples 
 you need  
 ~~make new file `*.html`~~  
